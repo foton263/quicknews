@@ -38,9 +38,9 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 
 <table>
 <colgroup>
-<col style="width: 7%" />
-<col style="width: 9%" />
-<col style="width: 83%" />
+<col style="width: 8%" />
+<col style="width: 12%" />
+<col style="width: 79%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -52,8 +52,8 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">2021-07-14</td>
-<td style="text-align: left;">CNN</td>
-<td style="text-align: left;">More unmarked graves discovered in British Columbia at a former indigenous residential school known as ‘Canada’s Alcatraz’</td>
+<td style="text-align: left;">New York Post</td>
+<td style="text-align: left;">NYC journalist targeted by Iranian operatives in twisted kidnapping plot, feds say</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2021-07-14</td>
@@ -62,18 +62,18 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2021-07-14</td>
-<td style="text-align: left;">Yahoo Sports</td>
-<td style="text-align: left;">Kevin Durant leads Team USA romp over Argentina after stunning 0-2 exhibition start</td>
+<td style="text-align: left;">CBS sports.com</td>
+<td style="text-align: left;">2021 MLB All-Star Game score: Live updates as AL, NL stars meet at Coors Field</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">NBC News</td>
-<td style="text-align: left;">Biden condemns ‘selfishness’ of stolen election lie pushed by Trump</td>
+<td style="text-align: left;">2021-07-14</td>
+<td style="text-align: left;">NBA</td>
+<td style="text-align: left;">Kevin Durant, Bradley Beal &amp; Zach Lavine All Score DOUBLE-FIGURES In USA Victory!</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2021-07-13</td>
 <td style="text-align: left;">CNBC</td>
-<td style="text-align: left;">Harris, Manchin to meet Texas Democrats who left state in effort to block GOP election bill</td>
+<td style="text-align: left;">Biden condemns Trump’s ‘Big Lie’ in major voting rights speech in Philadelphia</td>
 </tr>
 </tbody>
 </table>
@@ -94,20 +94,20 @@ list(title = strwrap(articles$title[1], width = 60),
 ```
 
     ## $title
-    ## [1] "Biden condemns 'selfishness' of stolen election lie pushed"
-    ## [2] "by Trump"                                                  
+    ## [1] "Biden condemns Trump's 'Big Lie' in major voting rights"
+    ## [2] "speech in Philadelphia"                                 
     ## 
     ## $text
-    ##  [1] "WASHINGTON — President Joe Biden on Tuesday warned that the" 
-    ##  [2] "country was facing a choice between \"democracy or"          
-    ##  [3] "autocracy\" following the passage of restrictive voting laws"
-    ##  [4] "by nearly two dozen states and took direct aim at former"    
-    ##  [5] "President Donald Trump's role in spreading misinformation"   
-    ##  [6] "about the 2020 election. \"In America, if you lose, you"     
-    ##  [7] "accept the results,\" Biden said in a speech on voting"      
-    ##  [8] "rights at the National Constitution Center in Philadelphia." 
-    ##  [9] "\"You don’t call facts 'fake' and then try to bring down the"
-    ## [10] "American experiment just because you're unhappy. That's not"
+    ##  [1] "President Joe Biden on Tuesday delivered a major speech on"  
+    ##  [2] "voting rights in Philadelphia, slamming his predecessor's"   
+    ##  [3] "\"Big Lie\" claim that the 2020 election was stolen.  \"It's"
+    ##  [4] "clear, for those who challenge the results or question the"  
+    ##  [5] "integrity of the election, no other election has ever been"  
+    ##  [6] "held under such scrutiny or such high standards. The 'Big"   
+    ##  [7] "Lie' is just that: a big lie,\" Biden said at the National"  
+    ##  [8] "Constitution Center, just steps away from Independence"      
+    ##  [9] "Hall. The speech comes as his administration faces growing"  
+    ## [10] "pressure from civil rights activists and other Democrats to"
 
 ``` r
 articles2 <- parallel::mclapply(metas$link,
@@ -121,15 +121,16 @@ Shortened URLs are generally encountered in social media. So, we build a
 simple demonstration Twitter corpus.
 
 ``` r
-some_tweets <- rtweet::search_tweets2(q = '#elections2022', 
+some_tweets <- rtweet::search_tweets2(q = '#Jan6', 
                                       include_rts = F,
                                       n = 1000)
 ```
 
 The `qnews_clean_urls` function extracts source info from URL links and
-identifies whether or not link has been shortened. The latter is
-accomplish using a simple dictionary of common shortening services (eg,
-*bitly.com* & *tinyurl.com*)
+identifies whether or not a link has been shortened. The latter is based
+on common shortening practices (eg, bit.ly, goo.gl), and is imperfect.
+But false positives here are mostly harmless – a non-shortened URL will
+be returned as such.
 
 ``` r
 clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
@@ -137,13 +138,13 @@ clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
 head(clean_urls)
 ```
 
-    ##                         urls_url           source is_short
-    ## 1       wjhg.com/2021/07/12/rep…         wjhg.com        0
-    ## 2  bloomberg.com/opinion/articl…    bloomberg.com        0
-    ## 3               staceyabrams.com staceyabrams.com        0
-    ## 4      wsbtv.com/news/politics/…        wsbtv.com        0
-    ## 5 vanityfair.com/news/2021/07/t…   vanityfair.com        0
-    ## 6           wpr.org/node/1820691          wpr.org        0
+    ##                             urls_url             source is_short
+    ## 2        twitter.com/mehdirhasan/st…        twitter.com        0
+    ## 3        twitter.com/Mediaite/statu…        twitter.com        0
+    ## 4        twitter.com/TheRickWilson/…        twitter.com        0
+    ## 5 washingtonpost.com/opinions/2021/… washingtonpost.com        0
+    ## 6       rawstory.com/capitol-riot-2…       rawstory.com        0
+    ## 7        twitter.com/ryanjreilly/st…        twitter.com        0
 
 The `qnews_unshorten_urls` can then be used to resolve shortenened URLs.
 
@@ -154,17 +155,17 @@ longs <- quicknews::qnews_unshorten_urls(x = shorts$urls_url)
 head(longs)
 ```
 
-    ##                            short_url
-    ## 1:              youtu.be/w1yDACYyjmM
-    ## 2:        lemonde.fr/economie/artic…
-    ## 3:                         abattu.es
-    ## 4:              youtu.be/B8y6Bm_XDzk
-    ## 5: huffingtonpost.fr/entry/en-vue-d…
-    ## 6:                   lnkd.in/dM27cx2
-    ##                                                                                     long_url
-    ## 1:                              https://www.youtube.com/watch?v=w1yDACYyjmM&feature=youtu.be
-    ## 2:                                            https://www.lemonde.fr/economie/artic%e2%80%a6
-    ## 3:                                                                                   timeout
-    ## 4:                              https://www.youtube.com/watch?v=B8y6Bm_XDzk&feature=youtu.be
-    ## 5: https://www.huffingtonpost.fr/404/?error=not_found&url=%2Fentry%2Fen-vue-d%25E2%2580%25A6
-    ## 6:                                     https://pcinq.org/gilles-le-candidat-dextreme-centre/
+    ##               short_url
+    ## 1: youtu.be/YeW5sI-R1Qg
+    ## 2:       flip.it/r9rAcR
+    ## 3:      yhoo.it/3kbCFvW
+    ## 4:      abcn.ws/3qxhbJJ
+    ## 5: youtu.be/3qYleCGIZLg
+    ## 6: youtu.be/JpiLJ_0zQRI
+    ##                                                                                                     long_url
+    ## 1:                                              https://www.youtube.com/watch?v=YeW5sI-R1Qg&feature=youtu.be
+    ## 2: https://www.buzzfeednews.com/article/zoetillman/douglas-jensen-capitol-riot-chased-eugene-goodman-release
+    ## 3:                               https://news.yahoo.com/federal-judge-skewered-kraken-lawyers-184750127.html
+    ## 4:                https://abcnews.go.com/Politics/fbi-releases-images-dc-pipe-bomb-suspect/story?id=76341036
+    ## 5:                                              https://www.youtube.com/watch?v=3qYleCGIZLg&feature=youtu.be
+    ## 6:                                              https://www.youtube.com/watch?v=JpiLJ_0zQRI&feature=youtu.be

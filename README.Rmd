@@ -79,13 +79,13 @@ articles2 <- parallel::mclapply(metas$link,
 Shortened URLs are generally encountered in social media.  So, we build a simple demonstration Twitter corpus.
 
 ```{r message=FALSE, warning=FALSE}
-some_tweets <- rtweet::search_tweets2(q = '#elections2022', 
+some_tweets <- rtweet::search_tweets2(q = '#Jan6', 
                                       include_rts = F,
                                       n = 1000)
 ```
 
 
-The `qnews_clean_urls` function extracts source info from URL links and identifies whether or not link has been shortened.  The latter is accomplish using a simple dictionary of common shortening services (eg, *bitly.com* & *tinyurl.com*)
+The `qnews_clean_urls` function extracts source info from URL links and identifies whether or not a link has been shortened.  The latter is based on common shortening practices (eg, bit.ly, goo.gl), and is imperfect.  But false positives here are mostly harmless -- a non-shortened URL will be returned as such.  
 
 ```{r}
 clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
