@@ -1,7 +1,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.com/jaytimm/quicknews.svg?branch=master)](https://travis-ci.com/jaytimm/quicknews)
+status](https://travis-ci.com/jaytimm/quicknews.svg?branch=main)](https://travis-ci.com/jaytimm/quicknews)
 <!-- badges: end -->
 
 quicknews
@@ -38,9 +38,9 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 
 <table>
 <colgroup>
-<col style="width: 7%" />
-<col style="width: 9%" />
-<col style="width: 83%" />
+<col style="width: 8%" />
+<col style="width: 10%" />
+<col style="width: 81%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -52,8 +52,8 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">2021-07-14</td>
-<td style="text-align: left;">CNN</td>
-<td style="text-align: left;">More unmarked graves discovered in British Columbia at a former indigenous residential school known as ‘Canada’s Alcatraz’</td>
+<td style="text-align: left;">CBS Sports</td>
+<td style="text-align: left;">2021 MLB All-Star Game: Time, TV channel, live stream, lineups, how to watch online, Midsummer Classic odds</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2021-07-13</td>
@@ -63,17 +63,17 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 <tr class="odd">
 <td style="text-align: left;">2021-07-13</td>
 <td style="text-align: left;">CNN</td>
-<td style="text-align: left;">A new poll shows why some vaccine-hesitant Americans decided to get the Covid-19 shot</td>
+<td style="text-align: left;">Feds arrest 5 family members from Texas in new US Capitol riot case</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">New York Post</td>
-<td style="text-align: left;">American suspect in Haiti president’s assassination was ‘confidential’ DEA source</td>
+<td style="text-align: left;">CNBC</td>
+<td style="text-align: left;">Harris, Manchin to meet Texas Democrats who left state in effort to block GOP election bill</td>
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">CNN</td>
-<td style="text-align: left;">Handgun sale ban to under 21-year-olds is unconstitutional, appeals court says</td>
+<td style="text-align: left;">New York Post</td>
+<td style="text-align: left;">American suspect in Haiti president’s assassination was ‘confidential’ DEA source</td>
 </tr>
 </tbody>
 </table>

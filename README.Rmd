@@ -6,7 +6,7 @@ output:
 ---
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.com/jaytimm/quicknews.svg?branch=master)](https://travis-ci.com/jaytimm/quicknews)
+[![Travis build status](https://travis-ci.com/jaytimm/quicknews.svg?branch=main)](https://travis-ci.com/jaytimm/quicknews)
 <!-- badges: end -->
 
 
