@@ -17,9 +17,8 @@ output:
 Some R-based tools for working with digital media, including functions for:
 
 (1) extracting metadata for articles posted on Google News;
-(2) resolving shortened URLs;
-(3) scraping online news article content per user-specified URL; and
-(4) downloading & summarizing online images.
+(2) resolving shortened URLs; and
+(3) scraping online news article content per user-specified URL.
 
 
 
@@ -74,66 +73,6 @@ articles2 <- parallel::mclapply(metas$link,
                                 quicknews::qnews_extract_article,
                                 mc.cores = 6)
 ```
-
-
-
-
-### § Download images
-
-```{r}
-tweets_df1 <- rtweet::search_tweets("#foxitis", 
-                                    n = 1000, 
-                                    include_rts = F) 
-
-tweet_pics <- tweets_df1 %>% filter(!is.na(media_url)) 
-```
-
-
-
-```{r message=FALSE, warning=FALSE}
-quicknews::img_download_images(link = unlist(tweet_pics$media_url)[1:49], 
-                               dir = tempdir(), 
-                               prefix = 'foxitis', 
-                               scale_border = T)
-```
-
-
-
-
-### § Build collage
-
-The `img_build_collage` function builds a collage per a user specified directory of images -- based on the `magick` package and this [post](https://masalmon.eu/2017/03/19/facesofr/).   
-
-```{r fig.height=6, message=FALSE, warning=FALSE}
-quicknews::img_build_collage(dir = tempdir(), 
-                             dimx = 7, 
-                             dimy = 7, 
-                             prefix = 'foxitis')
-```
-
-
-
-
-### § Google image links
-
-```{r fig.height=6, message=FALSE, warning=FALSE}
-search <- 'rino'
-links <- quicknews::img_get_gurls(x = search)
-```
-
-
-```{r}
-quicknews::img_download_images(link = links, 
-                               dir = tempdir(), 
-                               prefix = search, 
-                               scale_border = T)
-
-quicknews::img_build_collage(dir = tempdir(), 
-                             dimx = 5, 
-                             dimy = 4, 
-                             prefix = search)
-```
-
 
 
 

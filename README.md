@@ -1,21 +1,28 @@
-# quicknews
+<!-- badges: start -->
+
+[![Travis build
+status](https://travis-ci.com/jaytimm/quicknews.svg?branch=master)](https://travis-ci.com/jaytimm/quicknews)
+<!-- badges: end -->
+
+quicknews
+=========
 
 Some R-based tools for working with digital media, including functions
 for:
 
 1.  extracting metadata for articles posted on Google News;
-2.  resolving shortened URLs;
-3.  scraping online news article content per user-specified URL; and
-4.  downloading & summarizing online images.
+2.  resolving shortened URLs; and
+3.  scraping online news article content per user-specified URL.
 
-## Installation
+Installation
+------------
 
 ``` r
-library(devtools)
 devtools::install_github("jaytimm/quicknews")
 ```
 
-## Usage
+Usage
+-----
 
 ### § Google News metadata
 
@@ -29,13 +36,47 @@ extracted. Options for the `since` parameter include `1y`, `1d`, and
 metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 ```
 
-| date       | source               | title                                                                             |
-|:-----------|:---------------------|:----------------------------------------------------------------------------------|
-| 2021-05-09 | New York Post        | Remnants of Chinese rocket land in Indian Ocean                                   |
-| 2021-05-09 | The Associated Press | In tense Jerusalem, flag-waving Israeli march to go ahead                         |
-| 2021-05-09 | Los Angeles Times    | No-show high school students reject COVID reopening rules                         |
-| 2021-05-09 | ABC News             | Florida reports more than 10,000 COVID-19 variant cases, surge after spring break |
-| 2021-05-09 | Fox News             | Afghanistan girls school bombing death toll soars to 50                           |
+<table>
+<colgroup>
+<col style="width: 9%" />
+<col style="width: 12%" />
+<col style="width: 77%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">date</th>
+<th style="text-align: left;">source</th>
+<th style="text-align: left;">title</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">NBC News</td>
+<td style="text-align: left;">Biden condemns ‘selfishness’ of stolen election lie pushed by Trump</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">New York Post</td>
+<td style="text-align: left;">American suspect in Haiti president’s assassination was ‘confidential’ DEA source</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">CNN</td>
+<td style="text-align: left;">A new poll shows why some vaccine-hesitant Americans decided to get the Covid-19 shot</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">CNN</td>
+<td style="text-align: left;">Handgun sale ban to under 21-year-olds is unconstitutional, appeals court says</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">The Guardian</td>
+<td style="text-align: left;">Drunken Giuliani urged Trump to ‘just say we won’ on election night, book says</td>
+</tr>
+</tbody>
+</table>
 
 ### § Article content
 
@@ -53,78 +94,26 @@ list(title = strwrap(articles$title[1], width = 60),
 ```
 
     ## $title
-    ## [1] "Remnants of Chinese rocket land in Indian Ocean"
+    ## [1] "Biden condemns 'selfishness' of stolen election lie pushed"
+    ## [2] "by Trump"                                                  
     ## 
     ## $text
-    ##  [1] "A large out-of-control Chinese rocket has come down in the" 
-    ##  [2] "Indian Ocean. Remnants of the rocket landed west of the"    
-    ##  [3] "Maldives archipelago, Chinese state media said, ending days"
-    ##  [4] "of speculation of where the Long March 5B rocket might"     
-    ##  [5] "land. The odds of the spacecraft landing on a populated"    
-    ##  [6] "area of the earth were low, and the likelihood of injuries" 
-    ##  [7] "were even lower, according to engineers. The potential"     
-    ##  [8] "debris zone could have been as far north as New York, and"  
-    ##  [9] "as far south as Chile, scientists said. Last year, the"     
-    ## [10] "first Long March 5B damaged some buildings when it crashed"
+    ##  [1] "WASHINGTON — President Joe Biden on Tuesday warned that the" 
+    ##  [2] "country was facing a choice between \"democracy or"          
+    ##  [3] "autocracy\" following the passage of restrictive voting laws"
+    ##  [4] "by nearly two dozen states and took direct aim at former"    
+    ##  [5] "President Donald Trump's role in spreading misinformation"   
+    ##  [6] "about the 2020 election. \"In America, if you lose, you"     
+    ##  [7] "accept the results,\" Biden said in a speech on voting"      
+    ##  [8] "rights at the National Constitution Center in Philadelphia." 
+    ##  [9] "\"You don’t call facts 'fake' and then try to bring down the"
+    ## [10] "American experiment just because you're unhappy. That's not"
 
 ``` r
 articles2 <- parallel::mclapply(metas$link,
                                 quicknews::qnews_extract_article,
                                 mc.cores = 6)
 ```
-
-### § Download images
-
-``` r
-tweets_df1 <- rtweet::search_tweets("#foxitis", 
-                                    n = 1000, 
-                                    include_rts = F) 
-
-tweet_pics <- tweets_df1 %>% filter(!is.na(media_url)) 
-```
-
-``` r
-quicknews::img_download_images(link = unlist(tweet_pics$media_url)[1:49], 
-                               dir = tempdir(), 
-                               prefix = 'foxitis', 
-                               scale_border = T)
-```
-
-### § Build collage
-
-The `img_build_collage` function builds a collage per a user specified
-directory of images – based on the `magick` package and this
-[post](https://masalmon.eu/2017/03/19/facesofr/).
-
-``` r
-quicknews::img_build_collage(dir = tempdir(), 
-                             dimx = 7, 
-                             dimy = 7, 
-                             prefix = 'foxitis')
-```
-
-<img src="README_files/figure-markdown_github/unnamed-chunk-9-1.png" width="1254" />
-
-### § Google image links
-
-``` r
-search <- 'rino'
-links <- quicknews::img_get_gurls(x = search)
-```
-
-``` r
-quicknews::img_download_images(link = links, 
-                               dir = tempdir(), 
-                               prefix = search, 
-                               scale_border = T)
-
-quicknews::img_build_collage(dir = tempdir(), 
-                             dimx = 5, 
-                             dimy = 4, 
-                             prefix = search)
-```
-
-<img src="README_files/figure-markdown_github/unnamed-chunk-11-1.png" width="1696" />
 
 ### § Resolve shortened urls
 

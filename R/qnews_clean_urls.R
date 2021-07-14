@@ -1,12 +1,12 @@
 #' Clean, make uniform URL format -- mostly from Twitter. Identify URLs that have been shortened.
 #'
-#' @name twt_clean_urls
+#' @name qnews_clean_urls
 #' @param url A vector of URLs
 #' @return A data frame
 #'
 #' @export
-#' @rdname twt_clean_urls
-twt_clean_urls <- function(url) {
+#' @rdname qnews_clean_urls
+qnews_clean_urls <- function(url) {
 
   y <- unique(unlist(url))
   y <- unlist(strsplit(y, ' '))
