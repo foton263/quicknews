@@ -20,5 +20,3 @@ Imports:
     magrittr,
     zoo,
     stringi
-Suggests:
-    magick
