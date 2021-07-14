@@ -38,9 +38,9 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 
 <table>
 <colgroup>
+<col style="width: 7%" />
 <col style="width: 9%" />
-<col style="width: 12%" />
-<col style="width: 77%" />
+<col style="width: 83%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -51,9 +51,19 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">2021-07-14</td>
+<td style="text-align: left;">CNN</td>
+<td style="text-align: left;">More unmarked graves discovered in British Columbia at a former indigenous residential school known as ‘Canada’s Alcatraz’</td>
+</tr>
+<tr class="even">
 <td style="text-align: left;">2021-07-13</td>
 <td style="text-align: left;">NBC News</td>
 <td style="text-align: left;">Biden condemns ‘selfishness’ of stolen election lie pushed by Trump</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2021-07-13</td>
+<td style="text-align: left;">CNN</td>
+<td style="text-align: left;">A new poll shows why some vaccine-hesitant Americans decided to get the Covid-19 shot</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2021-07-13</td>
@@ -63,17 +73,7 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 <tr class="odd">
 <td style="text-align: left;">2021-07-13</td>
 <td style="text-align: left;">CNN</td>
-<td style="text-align: left;">A new poll shows why some vaccine-hesitant Americans decided to get the Covid-19 shot</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">CNN</td>
 <td style="text-align: left;">Handgun sale ban to under 21-year-olds is unconstitutional, appeals court says</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">The Guardian</td>
-<td style="text-align: left;">Drunken Giuliani urged Trump to ‘just say we won’ on election night, book says</td>
 </tr>
 </tbody>
 </table>
@@ -118,7 +118,7 @@ articles2 <- parallel::mclapply(metas$link,
 ### § Resolve shortened urls
 
 ``` r
-clean_urls <- quicknews::twt_clean_urls(url = tweets_df1$urls_url)
+clean_urls <- quicknews::qnews_clean_urls(url = tweets_df1$urls_url)
 shorts <- clean_urls %>% filter(is_short == 1)
-quicknews::twt_unshorten_urls(x = shorts$urls_url)
+quicknews::qnews_unshorten_urls(x = shorts$urls_url)
 ```

@@ -79,6 +79,6 @@ articles2 <- parallel::mclapply(metas$link,
 ### § Resolve shortened urls
 
 ```{r eval=FALSE}
-clean_urls <- quicknews::twt_clean_urls(url = tweets_df1$urls_url)
+clean_urls <- quicknews::qnews_clean_urls(url = tweets_df1$urls_url)
 shorts <- clean_urls %>% filter(is_short == 1)
-quicknews::twt_unshorten_urls(x = shorts$urls_url)
+quicknews::qnews_unshorten_urls(x = shorts$urls_url)
