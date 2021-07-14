@@ -38,9 +38,9 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 
 <table>
 <colgroup>
-<col style="width: 8%" />
-<col style="width: 10%" />
-<col style="width: 81%" />
+<col style="width: 7%" />
+<col style="width: 9%" />
+<col style="width: 83%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -52,8 +52,18 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 <tbody>
 <tr class="odd">
 <td style="text-align: left;">2021-07-14</td>
-<td style="text-align: left;">CBS Sports</td>
-<td style="text-align: left;">2021 MLB All-Star Game: Time, TV channel, live stream, lineups, how to watch online, Midsummer Classic odds</td>
+<td style="text-align: left;">CNN</td>
+<td style="text-align: left;">More unmarked graves discovered in British Columbia at a former indigenous residential school known as ‘Canada’s Alcatraz’</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2021-07-14</td>
+<td style="text-align: left;">CBSSports.com</td>
+<td style="text-align: left;">Team USA basketball vs. Argentina score: Kevin Durant, United States bounce back with dominant win</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2021-07-14</td>
+<td style="text-align: left;">Yahoo Sports</td>
+<td style="text-align: left;">Kevin Durant leads Team USA romp over Argentina after stunning 0-2 exhibition start</td>
 </tr>
 <tr class="even">
 <td style="text-align: left;">2021-07-13</td>
@@ -62,18 +72,8 @@ metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
 </tr>
 <tr class="odd">
 <td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">CNN</td>
-<td style="text-align: left;">Feds arrest 5 family members from Texas in new US Capitol riot case</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">2021-07-13</td>
 <td style="text-align: left;">CNBC</td>
 <td style="text-align: left;">Harris, Manchin to meet Texas Democrats who left state in effort to block GOP election bill</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">2021-07-13</td>
-<td style="text-align: left;">New York Post</td>
-<td style="text-align: left;">American suspect in Haiti president’s assassination was ‘confidential’ DEA source</td>
 </tr>
 </tbody>
 </table>
@@ -117,8 +117,54 @@ articles2 <- parallel::mclapply(metas$link,
 
 ### § Resolve shortened urls
 
+Shortened URLs are generally encountered in social media. So, we build a
+simple demonstration Twitter corpus.
+
 ``` r
-clean_urls <- quicknews::qnews_clean_urls(url = tweets_df1$urls_url)
-shorts <- clean_urls %>% filter(is_short == 1)
-quicknews::qnews_unshorten_urls(x = shorts$urls_url)
+some_tweets <- rtweet::search_tweets2(q = '#elections2022', 
+                                      include_rts = F,
+                                      n = 1000)
 ```
+
+The `qnews_clean_urls` function extracts source info from URL links and
+identifies whether or not link has been shortened. The latter is
+accomplish using a simple dictionary of common shortening services (eg,
+*bitly.com* & *tinyurl.com*)
+
+``` r
+clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
+
+head(clean_urls)
+```
+
+    ##                         urls_url           source is_short
+    ## 1       wjhg.com/2021/07/12/rep…         wjhg.com        0
+    ## 2  bloomberg.com/opinion/articl…    bloomberg.com        0
+    ## 3               staceyabrams.com staceyabrams.com        0
+    ## 4      wsbtv.com/news/politics/…        wsbtv.com        0
+    ## 5 vanityfair.com/news/2021/07/t…   vanityfair.com        0
+    ## 6           wpr.org/node/1820691          wpr.org        0
+
+The `qnews_unshorten_urls` can then be used to resolve shortenened URLs.
+
+``` r
+shorts <- subset(clean_urls, is_short == 1)
+longs <- quicknews::qnews_unshorten_urls(x = shorts$urls_url)
+
+head(longs)
+```
+
+    ##                            short_url
+    ## 1:              youtu.be/w1yDACYyjmM
+    ## 2:        lemonde.fr/economie/artic…
+    ## 3:                         abattu.es
+    ## 4:              youtu.be/B8y6Bm_XDzk
+    ## 5: huffingtonpost.fr/entry/en-vue-d…
+    ## 6:                   lnkd.in/dM27cx2
+    ##                                                                                     long_url
+    ## 1:                              https://www.youtube.com/watch?v=w1yDACYyjmM&feature=youtu.be
+    ## 2:                                            https://www.lemonde.fr/economie/artic%e2%80%a6
+    ## 3:                                                                                   timeout
+    ## 4:                              https://www.youtube.com/watch?v=B8y6Bm_XDzk&feature=youtu.be
+    ## 5: https://www.huffingtonpost.fr/404/?error=not_found&url=%2Fentry%2Fen-vue-d%25E2%2580%25A6
+    ## 6:                                     https://pcinq.org/gilles-le-candidat-dextreme-centre/

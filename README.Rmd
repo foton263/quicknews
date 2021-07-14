@@ -12,8 +12,6 @@ output:
 
 # quicknews 
 
-
-
 Some R-based tools for working with digital media, including functions for:
 
 (1) extracting metadata for articles posted on Google News;
@@ -78,7 +76,31 @@ articles2 <- parallel::mclapply(metas$link,
 
 ### § Resolve shortened urls
 
-```{r eval=FALSE}
-clean_urls <- quicknews::qnews_clean_urls(url = tweets_df1$urls_url)
-shorts <- clean_urls %>% filter(is_short == 1)
-quicknews::qnews_unshorten_urls(x = shorts$urls_url)
+Shortened URLs are generally encountered in social media.  So, we build a simple demonstration Twitter corpus.
+
+```{r message=FALSE, warning=FALSE}
+some_tweets <- rtweet::search_tweets2(q = '#elections2022', 
+                                      include_rts = F,
+                                      n = 1000)
+```
+
+
+The `qnews_clean_urls` function extracts source info from URL links and identifies whether or not link has been shortened.  The latter is accomplish using a simple dictionary of common shortening services (eg, *bitly.com* & *tinyurl.com*)
+
+```{r}
+clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
+
+head(clean_urls)
+```
+
+
+The `qnews_unshorten_urls` can then be used to resolve shortenened URLs.
+
+```{r}
+shorts <- subset(clean_urls, is_short == 1)
+longs <- quicknews::qnews_unshorten_urls(x = shorts$urls_url)
+
+head(longs)
+```
+
+
