@@ -20,3 +20,5 @@ Imports:
     magrittr,
     zoo,
     stringi
+Depends: 
+    R (>= 2.10)

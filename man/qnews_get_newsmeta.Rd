@@ -4,12 +4,10 @@
 \alias{qnews_get_newsmeta}
 \title{Get URLs/metadata for articles aggregated on Google News per search}
 \usage{
-qnews_get_newsmeta(term = NULL, since = NULL)
+qnews_get_newsmeta(term = NULL)
 }
 \arguments{
 \item{term}{Search term}
-
-\item{since}{A character vector specifying search time depth, eg, '1y', '1d', '7d'}
 }
 \value{
 A data frame

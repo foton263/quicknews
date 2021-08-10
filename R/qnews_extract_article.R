@@ -2,108 +2,48 @@
 #'
 #' @name qnews_extract_article
 #' @param url A vector of URLs
+#' @param cores An integer value specifying n threads
 #' @return A data frame
 #'
 #'
 #' @export
 #' @rdname qnews_extract_article
 #'
-qnews_extract_article <- function (url) {
+#'
+qnews_extract_article <- function(url,
+                                  cores) {
 
-  x0 <- lapply(url, function(x) {
-    y0 <- get_site(x)
-    extract_article(y0, u = x)})
+  batches <- split(url, ceiling(seq_along(url)/(length(url)/cores)))
+  #batches <- split(url, ceiling(seq_along(url)/cores))
+  n <- cores
 
-  data.table::rbindlist(x0)
-}
+  build_table <- function (url0) {
 
+    x0 <- lapply(url0, function(x) {
+      y0 <- get_site(x)
+      y1 <- annotate_site(site = y0)
 
-get_site <- function(x) {
+      y2 <- subset(y1, y1$discard == 'keep')
+      data.table::setDT(y2)
+      y2[, list(text = paste(text, collapse = " ")),
+         by = list(doc_id, title)]
+    })
 
-  site <- tryCatch(
-    xml2::read_html(x),
-    error = function(e) paste("Error"))
-
-  if(any(site == 'Error')) {
-    data.frame(doc_id = x,
-               type = '',
-               text = '') } else{
-                 ntype1 <- 'p,h1,h2,h3'
-
-                 w0 <- rvest::html_nodes(site, ntype1)
-                 if(length(w0) == 0) {
-                   w1 <- ''
-                   w2 <- '' } else{
-                     w1 <- rvest::html_name(w0)
-                     w2 <- rvest::html_text(w0)
-                   }
-                 data.frame(doc_id = x,
-                            type = w1,
-                            text = w2)
-               } }
+    data.table::rbindlist(x0)
+  }
 
 
-extract_article <- function(z, u) {
+  clust <- parallel::makeCluster(cores)
+  parallel::clusterExport(cl = clust,
+                          varlist = c('batches', 'ncs'),
+                          envir = environment())
 
-  junk <- c('your (email )?inbox',
-            'all rights reserved',
-            'free subsc',
-            '^please',
-            '^sign up',
-            'Check out',
-            '^Get',
-            '^got',
-            '^you must',
-            '^you can',
-            '^Thanks',
-            '^We ',
-            "^We've",
-            'login',
-            'log in',
-            'logged in',
-            'Data is a real-time snapshot',
-            '^do you',
-            '^subscribe to',
-            'your comment')
+  docs <- pbapply::pblapply(cl = clust,
+                            X = 1:n,
+                            FUN = function(i){
+                              build_table(url0 = batches[[i]]) })
 
-  junk1 <- paste0(junk, collapse = '|')
-  z$text <- trimws(z$text)
+  parallel::stopCluster(clust)
 
-  z$place <- stats::ave(seq_len(nrow(z)), z$doc_id, FUN = seq_along)
-
-  z$not_pnode <- ifelse(z$type == 'p', 0, 1)
-  z$has_ellipses <- ifelse(grepl('\\.\\.\\.(.)?$',
-                                 z$text), 1, 0)
-  z$no_stop <-  ifelse(grepl('(\\.|\\!|\\?)(.)?$', z$text), 0, 1)
-
-  z$has_latest <- ifelse(grepl('^latest( .*)? news$|^more( .*)? stories$',
-                               z$text,
-                               ignore.case = T),
-                         1, NA)
-  z$has_latest[z$place == 1] <- 0
-  z$has_latest <- zoo::na.locf(z$has_latest)
-
-  z$less_10 <- ifelse(nchar(z$text) > 10, 0, 1)
-  z$has_junk <- ifelse(grepl(junk1,
-                             z$text,
-                             ignore.case = T),
-                       1, 0)
-
-  z$discard <- rowSums(z[, c("not_pnode",
-                             "has_latest",
-                             "has_ellipses",
-                             "no_stop",
-                             "less_10",
-                             "has_junk")])
-
-  z$discard <- ifelse(z$discard > 0, 'junk', 'keep')
-
-  ## -- title may be empty --
-  title <- subset(z, z$type == 'h1')$text
-  title <- title[length(title)]
-  if(length(title) == 0) {title <- NA}
-  z1 <- subset(z, z$discard == 'keep')
-  data.frame(url = u,
-             title,
-             text = paste0(z1$text, collapse = ' '))
+  data.table::rbindlist(docs)
 }

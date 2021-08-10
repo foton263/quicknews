@@ -4,10 +4,12 @@
 \alias{qnews_extract_article}
 \title{Extract article content from online news sources.}
 \usage{
-qnews_extract_article(url)
+qnews_extract_article(url, cores)
 }
 \arguments{
 \item{url}{A vector of URLs}
+
+\item{cores}{An integer value specifying n threads}
 }
 \value{
 A data frame
