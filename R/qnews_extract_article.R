@@ -13,9 +13,9 @@
 qnews_extract_article <- function(url,
                                   cores) {
 
-  batches <- split(url, ceiling(seq_along(url)/(length(url)/cores)))
-  #batches <- split(url, ceiling(seq_along(url)/cores))
-  n <- cores
+  #batches <- split(url, ceiling(seq_along(url)/(length(url)/cores)))
+  batches <- split(url, ceiling(seq_along(url)/20))
+  # n <- cores
 
   build_table <- function (url0) {
 
@@ -35,13 +35,16 @@ qnews_extract_article <- function(url,
 
   clust <- parallel::makeCluster(cores)
   parallel::clusterExport(cl = clust,
-                          varlist = c('batches', 'ncs'),
+                          varlist = c('batches'),
                           envir = environment())
 
   docs <- pbapply::pblapply(cl = clust,
-                            X = 1:n,
-                            FUN = function(i){
-                              build_table(url0 = batches[[i]]) })
+                            X = batches,
+                            FUN = build_table
+                            # X = 1:n,
+                            # FUN = function(i){
+                            #   build_table(url0 = batches[[i]]) }
+                            )
 
   parallel::stopCluster(clust)
 

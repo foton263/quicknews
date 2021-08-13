@@ -1,4 +1,4 @@
---
+---
 output:
   md_document:
     variant: markdown_github
@@ -11,11 +11,11 @@ output:
 
 # quicknews 
 
-Some R-based tools for working with digital media, including functions for:
+A simple, lightweight news article extractor, with functions for:
 
 (1) extracting metadata for articles posted on Google News;
-(2) resolving shortened URLs; and
-(3) scraping online news article content per user-specified URL.
+(2) scraping online news article content per user-specified URL; and
+(3) resolving shortened URLs.
 
 
 
@@ -36,10 +36,10 @@ devtools::install_github("jaytimm/quicknews")
 
 ### § Google News metadata
 
-The `qnews_get_newsmeta` retrieves metadata from news articles posted to Google News.  There are two search parameters: `term` & `since`.  By default, metadata for articles included in the Headlines section are extracted.  Options for the `since` parameter include `1y`, `1d`, and `7d`.
+The `qnews_get_newsmeta` retrieves metadata from news articles posted to Google News based on user-specified search. Via the `term` parameter. By default, metadata for articles included in the Headlines section are extracted.
 
 ```{r}
-metas <- quicknews::qnews_get_newsmeta (term = NULL, since = NULL)
+metas <- quicknews::qnews_get_newsmeta (term = NULL)
 ```
 
 
@@ -56,46 +56,46 @@ metas %>%
 
 ### § Article content
 
-The `qnews_extract_article` functions scrapes web content from URLs specified in the `links` parameter.  Via `rvest` and `xml2`.  The function contains a simple filter for culling html nodes not relevant to article content.  It is not perfect -- no article extractor is -- but no Java dependencies. 
+The `qnews_extract_article` function is designed for multi-threaded text extraction from HTML.  The function scrapes web content from URLs specified in the `url` parameter.  Via `rvest` and `xml2`.  A simple approach, with no Java dependencies. HTML markups, comments, extraneous text, etc. are removed mostly via node type, node-final punctuation, character length, and a small dictionary of "junk" phrases.
 
 ```{r}
-articles <- quicknews::qnews_extract_article(metas$link[1:5])
+articles <- quicknews::qnews_extract_article(url = metas$link[1:5],
+                                             cores = 1)
 
 list(title = strwrap(articles$title[1], width = 60), 
      text = strwrap(articles$text[1], width = 60)[1:10])
 ```
 
-```{r eval=FALSE}
-articles2 <- parallel::mclapply(metas$link,
-                                quicknews::qnews_extract_article,
-                                mc.cores = 6)
-```
 
 
 
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
 ### § Resolve shortened urls
 
-Shortened URLs are generally encountered in social media.  So, we build a simple demonstration Twitter corpus.
+# Shortened URLs are generally encountered in social media.  So, we build a simple demonstration Twitter corpus.
 
-```{r message=FALSE, warning=FALSE}
 some_tweets <- rtweet::search_tweets2(q = '#Jan6', 
                                       include_rts = F,
                                       n = 1000)
 ```
 
 
-The `qnews_clean_urls` function extracts source info from URL links and identifies whether or not a link has been shortened.  The latter is based on common shortening practices (eg, bit.ly, goo.gl), and is imperfect.  But false positives here are mostly harmless -- a non-shortened URL will be returned as such.  
 
-```{r}
-clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
+
+```{r eval=FALSE, include=FALSE}
+# The `qnews_clean_urls` function extracts source info from URL links and identifies whether or not a link has been shortened.  The latter is based on common shortening practices (eg, bit.ly, goo.gl), and is imperfect.  But false positives here are mostly harmless -- a non-shortened URL will be returned as such.  
+# clean_urls <- quicknews::qnews_clean_urls(url = some_tweets$urls_url)
 
 head(clean_urls)
 ```
 
 
-The `qnews_unshorten_urls` can then be used to resolve shortenened URLs.
 
-```{r}
+
+```{r eval=FALSE, include=FALSE}
+# The `qnews_unshorten_urls` can then be used to resolve shortenened URLs.
+
 shorts <- subset(clean_urls, is_short == 1)
 longs <- quicknews::qnews_unshorten_urls(x = shorts$urls_url)
 
