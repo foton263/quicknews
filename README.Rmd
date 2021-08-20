@@ -6,6 +6,7 @@ output:
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.com/jaytimm/quicknews.svg?branch=main)](https://travis-ci.com/jaytimm/quicknews)
+[![R-CMD-check](https://github.com/jaytimm/quicknews/workflows/R-CMD-check/badge.svg)](https://github.com/jaytimm/quicknews/actions)
 <!-- badges: end -->
 
 

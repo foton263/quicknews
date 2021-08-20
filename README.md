@@ -2,6 +2,7 @@
 
 [![Travis build
 status](https://travis-ci.com/jaytimm/quicknews.svg?branch=main)](https://travis-ci.com/jaytimm/quicknews)
+[![R-CMD-check](https://github.com/jaytimm/quicknews/workflows/R-CMD-check/badge.svg)](https://github.com/jaytimm/quicknews/actions)
 <!-- badges: end -->
 
 # quicknews
@@ -31,13 +32,13 @@ extracted.
 metas <- quicknews::qnews_get_newsmeta (term = NULL)
 ```
 
-| term      | date       | source           | title                                                                                                                                 |
-|:----------|:-----------|:-----------------|:--------------------------------------------------------------------------------------------------------------------------------------|
-| headlines | 2021-08-13 | The Guardian     | First Thing: Afghanistan likened to fall of Saigon amid advance by Taliban                                                            |
-| headlines | 2021-08-13 | Associated Press | Census data: US is diversifying, white population shrinking                                                                           |
-| headlines | 2021-08-13 | CNN              | These 8 states make up half of US Covid-19 hospitalizations. And the surge among the unvaccinated is overwhelming health care workers |
-| headlines | 2021-08-13 | POLITICO         | 9 Dems threaten mutiny over Pelosi’s budget plan                                                                                      |
-| headlines | 2021-08-13 | New York Post    | President Biden urges voters to vote ‘no’ in Newsom’s recall vote                                                                     |
+| term      | date       | source        | title                                                                                 |
+|:----------|:-----------|:--------------|:--------------------------------------------------------------------------------------|
+| headlines | 2021-08-20 | CNN           | Biden set to speak on evacuations as situation in Afghanistan grows desperate         |
+| headlines | 2021-08-20 | NPR           | New England Is Facing Its First Direct Hurricane Landfall In 30 Years                 |
+| headlines | 2021-08-20 | New York Post | ABC accused of cutting unflattering portions of Biden’s interview                     |
+| headlines | 2021-08-20 | CNN           | Dr. Sanjay Gupta: Simple steps for coexisting with the coronavirus                    |
+| headlines | 2021-08-20 | NPR           | Rain Fell On The Peak Of Greenland’s Ice Sheet For The First Time In Recorded History |
 
 ### § Article content
 
@@ -57,17 +58,17 @@ list(title = strwrap(articles$title[1], width = 60),
 ```
 
     ## $title
-    ## [1] "First Thing: Afghanistan likened to fall of Saigon amid"
-    ## [2] "advance by Taliban"                                     
+    ## [1] "Biden set to speak on evacuations as situation in"
+    ## [2] "Afghanistan grows desperate"                      
     ## 
     ## $text
-    ##  [1] "Good morning. The situation in Afghanistan has been likened"
-    ##  [2] "to the fall of Saigon, as officials confirmed on Friday"    
-    ##  [3] "that the Taliban had captured the country’s second-biggest" 
-    ##  [4] "city, Kandahar, as well as Lashkar Gah in the south. The"   
-    ##  [5] "Pentagon announced on Thursday it would send three"         
-    ##  [6] "battalions, about 3,000 soldiers, to Kabul’s international" 
-    ##  [7] "airport within 24 to 48 hours. The defence department"      
-    ##  [8] "spokesman, John Kirby, said the reinforcements would help"  
-    ##  [9] "the “safe and orderly reduction” of US nationals and"       
-    ## [10] "Afghans who worked with Americans and had been granted"
+    ##  [1] "(CNN)President Joe Biden will deliver remarks on Friday" 
+    ##  [2] "about the ongoing US military evacuations of American"   
+    ##  [3] "citizens and vulnerable Afghans as chaos ensues at and"  
+    ##  [4] "around Kabul's international airport. CNN's Allie Malloy"
+    ##  [5] "and Jeff Zeleny contributed to this report."             
+    ##  [6] NA                                                        
+    ##  [7] NA                                                        
+    ##  [8] NA                                                        
+    ##  [9] NA                                                        
+    ## [10] NA
