@@ -22,6 +22,8 @@ A simple, lightweight news article extractor, with functions for:
 
 ## Installation
 
+You can download the development version from GitHub with:
+
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
 ```
@@ -64,7 +66,7 @@ articles <- quicknews::qnews_extract_article(url = metas$link[1:5],
                                              cores = 1)
 
 list(title = strwrap(articles$title[1], width = 60), 
-     text = strwrap(articles$text[1], width = 60)[1:10])
+     text = strwrap(articles$text[1], width = 60)[1:5])
 ```
 
 

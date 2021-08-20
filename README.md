@@ -15,6 +15,8 @@ A simple, lightweight news article extractor, with functions for:
 
 ## Installation
 
+You can download the development version from GitHub with:
+
 ``` r
 devtools::install_github("jaytimm/quicknews")
 ```
@@ -32,13 +34,13 @@ extracted.
 metas <- quicknews::qnews_get_newsmeta (term = NULL)
 ```
 
-| term      | date       | source        | title                                                                                 |
-|:----------|:-----------|:--------------|:--------------------------------------------------------------------------------------|
-| headlines | 2021-08-20 | CNN           | Biden set to speak on evacuations as situation in Afghanistan grows desperate         |
-| headlines | 2021-08-20 | NPR           | New England Is Facing Its First Direct Hurricane Landfall In 30 Years                 |
-| headlines | 2021-08-20 | New York Post | ABC accused of cutting unflattering portions of Biden’s interview                     |
-| headlines | 2021-08-20 | CNN           | Dr. Sanjay Gupta: Simple steps for coexisting with the coronavirus                    |
-| headlines | 2021-08-20 | NPR           | Rain Fell On The Peak Of Greenland’s Ice Sheet For The First Time In Recorded History |
+| term      | date       | source              | title                                                                                                                 |
+|:----------|:-----------|:--------------------|:----------------------------------------------------------------------------------------------------------------------|
+| headlines | 2021-08-20 | NPR                 | WATCH LIVE: Biden Gives An Update On Afghanistan Evacuations                                                          |
+| headlines | 2021-08-20 | The Washington Post | Taliban bars female news anchors from state television, reports say                                                   |
+| headlines | 2021-08-20 | CBS Boston          | Hurricane Watch For Parts Of Southern New England As Tropical Storm Henri Could Be Historic                           |
+| headlines | 2021-08-20 | CNN                 | Florida Board of Education orders Broward, Alachua counties to allow mask opt-out in 48 hours or start losing funding |
+| headlines | 2021-08-20 | ABC10               | Friday morning Wildfire update \| What’s burning in Northern California                                               |
 
 ### § Article content
 
@@ -54,21 +56,16 @@ articles <- quicknews::qnews_extract_article(url = metas$link[1:5],
                                              cores = 1)
 
 list(title = strwrap(articles$title[1], width = 60), 
-     text = strwrap(articles$text[1], width = 60)[1:10])
+     text = strwrap(articles$text[1], width = 60)[1:5])
 ```
 
     ## $title
-    ## [1] "Biden set to speak on evacuations as situation in"
-    ## [2] "Afghanistan grows desperate"                      
+    ## [1] "WATCH LIVE: Biden Gives An Update On Afghanistan"
+    ## [2] "Evacuations"                                     
     ## 
     ## $text
-    ##  [1] "(CNN)President Joe Biden will deliver remarks on Friday" 
-    ##  [2] "about the ongoing US military evacuations of American"   
-    ##  [3] "citizens and vulnerable Afghans as chaos ensues at and"  
-    ##  [4] "around Kabul's international airport. CNN's Allie Malloy"
-    ##  [5] "and Jeff Zeleny contributed to this report."             
-    ##  [6] NA                                                        
-    ##  [7] NA                                                        
-    ##  [8] NA                                                        
-    ##  [9] NA                                                        
-    ## [10] NA
+    ## [1] "President Biden will deliver his second speech on"         
+    ## [2] "Afghanistan this week, with remarks Friday afternoon about"
+    ## [3] "evacuation efforts in Kabul. President Biden will deliver" 
+    ## [4] "another speech about Afghanistan on Friday afternoon, as"  
+    ## [5] "the scramble to evacuate American citizens and vulnerable"
