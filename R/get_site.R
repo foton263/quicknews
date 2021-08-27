@@ -9,11 +9,12 @@
 #' @rdname get_site
 #'
 get_site <- function(url) {
-
+    require(xml2)
+    require(httr)
 
   ## non of this error business works -- and a poorly internet connection will return very few results -- ???
   site <- tryCatch(
-    xml2::read_html(url),
+    xml2::read_html(GET(url, timeout(60)))),
     error = function(e) paste("Error"))
 
   if(any(site == 'Error')) {
