@@ -9,7 +9,7 @@
 #' @rdname qnews_get_newsmeta
 #'
 qnews_get_newsmeta <- function(term = NULL) {
-
+  options(stringsAsFactors = FALSE)
   clang_suffix <- 'hl=en-US&gl=US&ceid=US:en&q='
   base <- "https://news.google.com/news/rss/search?"
   tops <- "https://news.google.com/news/rss/?ned=us&hl=en&gl=us"
